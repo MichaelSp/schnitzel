@@ -11,7 +11,7 @@
 		atDestination = $bindable()
 	} = $props();
 
-	let activeChallenge =$derived(shipInfo?.challenges?.length || 0);
+	let activeChallenge = $derived(shipInfo?.challenges?.length || 0);
 
 	let position: GeolocationCoordinates | undefined = $state();
 	let error: string | undefined = $state();
@@ -35,8 +35,10 @@
 		if (!position || !destination) {
 			return 'Loading...';
 		}
-		const dist = Math.sqrt(Math.pow(position.latitude - destination.latitude, 2)
-			+ Math.pow(position.longitude - destination.longitude, 2));
+		const dist = Math.sqrt(
+			Math.pow(position.latitude - destination.latitude, 2) +
+				Math.pow(position.longitude - destination.longitude, 2)
+		);
 
 		atDestination = dist < range;
 
@@ -49,8 +51,7 @@
 	});
 </script>
 
-
-<div class="overlay" class:atDestination={atDestination}>
+<div class="overlay" class:atDestination>
 	<h2 class="mdc-typography--headline4">HyperChallenge</h2>
 	{#if error}
 		<div style="color: red;">{error}</div>
@@ -59,7 +60,7 @@
 	{/if}
 
 	{#if destination}
-		<LatLong position={destination} title="Destination"/>
+		<LatLong position={destination} title="Destination" />
 
 		<Distances {shipInfos} {activeChallenge} {destination}></Distances>
 
@@ -68,14 +69,14 @@
 </div>
 
 <style>
-    .overlay {
-        bottom: 1rem;
-        right: 1rem;
-        background: white;
-        padding: 1rem;
-        font-size: 0.9rem;
-        min-width: 150px;
-    }
+	.overlay {
+		bottom: 1rem;
+		right: 1rem;
+		background: white;
+		padding: 1rem;
+		font-size: 0.9rem;
+		min-width: 150px;
+	}
 
 	.overlay.atDestination {
 		background: lightgreen;

@@ -2,20 +2,20 @@ import type { ShipInfo, ShipInfos } from '$lib';
 
 const db = new Map<string, ShipInfo>([
 	[
-		"ship1",
+		'ship1',
 		{
-			id: "ship1",
-			shipName: "Ship One",
-			location: { latitude: 27.2522, longitude: 78.000 },
-			status: "active",
-			challenges: [],
-		},
+			id: 'ship1',
+			shipName: 'Ship One',
+			location: { latitude: 27.2522, longitude: 78.0 },
+			status: 'active',
+			challenges: []
+		}
 	],
 	[
-		"c6897a57-34b6-473e-9537-0638601ebb1f",
+		'c6897a57-34b6-473e-9537-0638601ebb1f',
 		{
-			id: "c6897a57-34b6-473e-9537-0638601ebb1f",
-			shipName: "ich"
+			id: 'c6897a57-34b6-473e-9537-0638601ebb1f',
+			shipName: 'ich'
 		}
 	]
 ]);
@@ -29,7 +29,6 @@ export function onDatabaseChange(callback: (data: ShipInfos) => void) {
 		subscribers.delete(callback);
 	};
 }
-
 
 export function getShipLocations(): ShipInfos {
 	return db;
