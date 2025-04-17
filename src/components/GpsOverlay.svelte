@@ -1,11 +1,17 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import Distances from './Distances.svelte';
+	import LatLong from './LatLong.svelte';
 
 	let {
+		shipInfos,
+		shipInfo,
 		destination,
-		range = 100,
+		range = 100, // in meters
 		atDestination = $bindable()
 	} = $props();
+
+	let activeChallenge =$derived(shipInfo?.challenges?.length || 0);
 
 	let position: GeolocationCoordinates | undefined = $state();
 	let error: string | undefined = $state();
@@ -34,39 +40,39 @@
 
 		atDestination = dist < range;
 
-		return `${dist} km`;
+		const nauticalMiles = dist * 0.539957; // Convert to nautical miles
+		if (nauticalMiles < 1) {
+			return `${(dist * 1000).toFixed(2)} m`;
+		} else {
+			return `${nauticalMiles.toFixed(2)} nm`;
+		}
 	});
 </script>
 
 
 <div class="overlay" class:atDestination={atDestination}>
-	<strong>GPS Position:</strong>
+	<h2 class="mdc-typography--headline4">HyperChallenge</h2>
 	{#if error}
 		<div style="color: red;">{error}</div>
 	{:else}
-		<div>Lat: {position?.latitude ?? 'Loading...'}</div>
-		<div>Long: {position?.longitude ?? 'Loading...'}</div>
+		<LatLong {position} title="Position" />
 	{/if}
 
 	{#if destination}
-		<strong>Destination</strong>
-		<div>Latitude: {destination.latitude}</div>
-		<div>Longitude: {destination.longitude}</div>
+		<LatLong position={destination} title="Destination"/>
 
-		<div>Distance: {distance()}</div>
+		<Distances {shipInfos} {activeChallenge} {destination}></Distances>
+
+		<strong>Active Challenge {activeChallenge}</strong>
 	{/if}
 </div>
 
 <style>
     .overlay {
-        position: fixed;
-        top: 1rem;
+        bottom: 1rem;
         right: 1rem;
         background: white;
         padding: 1rem;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        border-radius: 8px;
-        font-family: Arial, sans-serif;
         font-size: 0.9rem;
         min-width: 150px;
     }
