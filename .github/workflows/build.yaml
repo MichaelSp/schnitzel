@@ -55,11 +55,13 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Create Git Tag
         run: |
           git config --local user.name "GitHub Actions"
-          git config --local user.email action+michaelsp@github.com"
+          git config --local user.email "action+michaelsp@github.com"
           git tag -a v${{ steps.bump-semver.outputs.new_version }} -m "Release v${{ steps.bump-semver.outputs.new_version }}"
           git push origin v${{ steps.bump-semver.outputs.new_version }}
 
