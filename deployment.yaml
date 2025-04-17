@@ -1,3 +1,4 @@
+apiVersion: v1
 kind: Namespace
 metadata:
   name: schnitzel
@@ -17,14 +18,14 @@ spec:
         app: schnitzel
     spec:
       containers:
-        - name: schnitzel
-          image: ghcr.io/michaelspr/schnitzel:0.0.1
-          resources:
-            limits:
-              memory: '128Mi'
-              cpu: '500m'
-          ports:
-            - containerPort: 3000
+      - name: schnitzel
+        image: ghcr.io/michaelsp/schnitzel:0.1.0
+        resources:
+          limits:
+            memory: '128Mi'
+            cpu: '500m'
+        ports:
+        - containerPort: 3000
 ---
 apiVersion: v1
 kind: Service
@@ -35,9 +36,9 @@ spec:
   selector:
     app: schnitzel
   ports:
-    - protocol: TCP
-      port: 3000
-      targetPort: 3000
+  - protocol: TCP
+    port: 3000
+    targetPort: 3000
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -48,10 +49,17 @@ metadata:
   namespace: schnitzel
 spec:
   tls:
-    - hosts:
-        - schnitzel.sprauer.net
-      secretName: schnitzel-tls
+  - hosts:
+    - schnitzel.sprauer.net
+    secretName: schnitzel-tls
   rules:
-    - host: schnitzel.sprauer.net
-      http:
-        paths:
+  - host: schnitzel.sprauer.net
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: schnitzel
+            port:
+              number: 3000
