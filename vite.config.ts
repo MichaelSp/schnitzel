@@ -4,6 +4,9 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
 	plugins: [sveltekit()],
+	build: {
+		sourcemap: process.env.NODE_ENV !== 'production' // Enable source maps only in development
+	},
 	test: {
 		workspace: [
 			{
