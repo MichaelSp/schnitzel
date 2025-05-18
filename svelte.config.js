@@ -5,9 +5,6 @@ const config = {
 	preprocess: vitePreprocess(),
 	kit: {
 		adapter: adapter(),
-		headers: {
-			'Access-Control-Allow-Origin': 'https://schnitzel.sprauer.net'
-		}
 	}
 };
 
