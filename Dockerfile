@@ -9,7 +9,7 @@ COPY . .
 
 RUN npm run build
 
-FROM node:23-slim
+FROM node:24-slim
 
 WORKDIR /app
 COPY --from=build /app/build ./build
